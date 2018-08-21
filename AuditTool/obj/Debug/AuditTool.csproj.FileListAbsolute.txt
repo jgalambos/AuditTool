@@ -1,0 +1,10 @@
+C:\Repositories\AuditTool\AuditTool\bin\Debug\AuditTool.exe.config
+C:\Repositories\AuditTool\AuditTool\bin\Debug\AuditTool.exe
+C:\Repositories\AuditTool\AuditTool\bin\Debug\AuditTool.pdb
+C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.csprojAssemblyReference.cache
+C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.Form1.resources
+C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.Properties.Resources.resources
+C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.csproj.GenerateResource.cache
+C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.csproj.CoreCompileInputs.cache
+C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.exe
+C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.pdb
