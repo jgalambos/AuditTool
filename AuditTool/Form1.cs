@@ -46,10 +46,15 @@ namespace AuditTool {
             FileNode value = new FileNode();
             List<FileNode> FileNodes = new List<FileNode>();
             DirectoryInfo info = new DirectoryInfo(parent.Path);
+            FileInfo[] files = info.GetFiles().OrderBy(p => p.CreationTime).ToArray();
             try {
                 foreach (DirectoryInfo dir in info.EnumerateDirectories()) {
                     value = new FileNode(dir);
                     GetFileStructureRecursive(value);
+                    FileNodes.Add(value);
+                }
+                foreach (FileInfo file in files) {
+                    value = new FileNode(file);
                     FileNodes.Add(value);
                 }
                 parent.Nodes.AddRange(FileNodes.ToArray());
@@ -81,12 +86,23 @@ namespace AuditTool {
         */
         private void TreeViewMain_AfterSelect(object sender, TreeViewEventArgs e) {
             if (TreeViewMain.SelectedNode != null) {
+                float tempSize = ((FileNode)(TreeViewMain.SelectedNode)).Size;
                 LabelReadout.Text = "";
                 LabelReadout.Text += "Name: " + ((FileNode)(TreeViewMain.SelectedNode)).Name + Environment.NewLine;
                 LabelReadout.Text += "Path: " + ((FileNode)(TreeViewMain.SelectedNode)).Path + Environment.NewLine;
-                LabelReadout.Text += "Size: " + ((FileNode)(TreeViewMain.SelectedNode)).Size + Environment.NewLine;
+                if (tempSize > 100000) {
+                    tempSize /= 1000000;
+                    LabelReadout.Text += "Size: " + tempSize.ToString("0.00") + " MB" + Environment.NewLine;
+                } else if (tempSize > 100) {
+                    tempSize /= 1000;
+                    LabelReadout.Text += "Size: " + tempSize.ToString("0.00") + " KB" + Environment.NewLine;
+                } else {
+                    LabelReadout.Text += "Size: " + tempSize + " bytes" + Environment.NewLine;
+                }
                 LabelReadout.Text += "Date Created: " + ((FileNode)(TreeViewMain.SelectedNode)).CreateDate + Environment.NewLine;
                 LabelReadout.Text += "Date Modified: " + ((FileNode)(TreeViewMain.SelectedNode)).ModifiedDate + Environment.NewLine;
+                if (((FileNode)(TreeViewMain.SelectedNode)).Hidden)
+                    LabelReadout.Text += "This file is Hidden.";
                 
             }
         }
