@@ -27,16 +27,22 @@ namespace AuditTool {
 
         private void button2_Click(object sender, EventArgs e) {
             LabelReadout.Text = "";
-            DirectoryInfo info = new DirectoryInfo(@"C:\Repositories");
+            LabelReadout.Text = GetDirectoriesAndFiles(@"C:\Repositories");
+            
+        }
+
+        private string GetDirectoriesAndFiles(string path) {
+            string value = "";
+            DirectoryInfo info = new DirectoryInfo(path);
             FileInfo[] files = info.GetFiles().OrderBy(p => p.CreationTime).ToArray();
             foreach (FileInfo file in files) {
-                LabelReadout.Text += "file 1: ";
-                LabelReadout.Text += file.FullName + Environment.NewLine;
+                value += file.FullName + Environment.NewLine;
             }
             foreach (DirectoryInfo dir in info.GetDirectories()) {
-                LabelReadout.Text += dir.FullName + Environment.NewLine;
+                value += dir.FullName + Environment.NewLine;
+                value += GetDirectoriesAndFiles(dir.FullName.ToString());
             }
-            
+            return value;
         }
     }
 }
