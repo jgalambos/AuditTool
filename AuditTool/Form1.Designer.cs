@@ -69,10 +69,12 @@
             // 
             // TreeViewMain
             // 
+            this.TreeViewMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TreeViewMain.Location = new System.Drawing.Point(3, 3);
             this.TreeViewMain.Name = "TreeViewMain";
             this.TreeViewMain.Size = new System.Drawing.Size(797, 685);
             this.TreeViewMain.TabIndex = 0;
+            this.TreeViewMain.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewMain_AfterSelect);
             // 
             // Form1
             // 

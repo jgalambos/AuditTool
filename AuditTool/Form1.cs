@@ -28,66 +28,67 @@ namespace AuditTool {
         private void button2_Click(object sender, EventArgs e) {
             LabelReadout.Text = "";
             TreeViewMain.Nodes.Clear();
-            TreeNode RootNode = new TreeNode(@"C:\");
+            DirectoryInfo dir = new DirectoryInfo(@"C:\Repositories");
+            FileNode RootNode = new FileNode(dir);
             GetFileStructure(RootNode);
             TreeViewMain.Nodes.Add(RootNode);
-            // LabelReadout.Text = GetDirectoriesAndFiles(@"C:\Repositories");
         }
 
-        private void GetFileStructure(TreeNode root) {
-            List<TreeNode> TreeNodes = new List<TreeNode>();
+        private void GetFileStructure(FileNode root) {
+            List<FileNode> FileNodes = new List<FileNode>();
             DirectoryInfo info = new DirectoryInfo(root.Text);
-            /*FileInfo[] files = info.GetFiles().OrderBy(p => p.LastAccessTime).ToArray();
-            foreach (FileInfo file in files) {
-                TreeNodes.Add(new TreeNode(file.FullName));
-            }*/
-            /*foreach (DirectoryInfo dir in info.GetDirectories()) {
-                GetFileStructureRecursive(root);
-                TreeNodes.Add(new TreeNode(dir.FullName));
-            }*/
             GetFileStructureRecursive(root);
-            root.Nodes.AddRange(TreeNodes.ToArray());
-            TreeViewMain.Nodes.AddRange(TreeNodes.ToArray());
+            root.Nodes.AddRange(FileNodes.ToArray());
+            TreeViewMain.Nodes.AddRange(FileNodes.ToArray());
         }
 
-        private void GetFileStructureRecursive(TreeNode parent) {
-            TreeNode value = new TreeNode();
-            List<TreeNode> TreeNodes = new List<TreeNode>();
-            DirectoryInfo info = new DirectoryInfo(parent.Text);
-            /*FileInfo[] files = info.GetFiles().OrderBy(p => p.LastAccessTime).ToArray();
-            foreach (FileInfo file in files) {
-                TreeNodes.Add(new TreeNode(file.FullName));
-            }*/
+        private void GetFileStructureRecursive(FileNode parent) {
+            FileNode value = new FileNode();
+            List<FileNode> FileNodes = new List<FileNode>();
+            DirectoryInfo info = new DirectoryInfo(parent.Path);
             try {
-                foreach (DirectoryInfo dir in info.GetDirectories()) {
-                    value = new TreeNode(dir.FullName);
+                foreach (DirectoryInfo dir in info.EnumerateDirectories()) {
+                    value = new FileNode(dir);
                     GetFileStructureRecursive(value);
-                    TreeNodes.Add(value);
+                    FileNodes.Add(value);
                 }
-                parent.Nodes.AddRange(TreeNodes.ToArray());
+                parent.Nodes.AddRange(FileNodes.ToArray());
             } catch (UnauthorizedAccessException ex) {
+                // Not sure what the best way to get around this is.  I should have access.
                 LabelReadout.Text += ex.Message + Environment.NewLine;
             }
 
         }
-
+        /*
         private string GetDirectoriesAndFiles(string path) {
-            List<TreeNode> TreeNodes = new List<TreeNode>();
-            List<TreeNode> ChildNode = new List<TreeNode>();
+            List<FileNode> FileNodes = new List<FileNode>();
+            List<FileNode> ChildNode = new List<FileNode>();
             string value = "";
             DirectoryInfo info = new DirectoryInfo(path);
             FileInfo[] files = info.GetFiles().OrderBy(p => p.CreationTime).ToArray();
             foreach (FileInfo file in files) {
                 value += file.FullName + Environment.NewLine;
-                TreeNodes.Add(new TreeNode(file.FullName));
+                FileNodes.Add(new FileNode(file.FullName));
             }
             foreach (DirectoryInfo dir in info.GetDirectories()) {
                 value += dir.FullName + Environment.NewLine;
-                TreeNodes.Add(new TreeNode(dir.FullName));
+                FileNodes.Add(new FileNode(dir.FullName));
                 value += GetDirectoriesAndFiles(dir.FullName.ToString());
             }
-            TreeViewMain.Nodes.AddRange(TreeNodes.ToArray());
+            TreeViewMain.Nodes.AddRange(FileNodes.ToArray());
             return value;
+        }
+        */
+        private void TreeViewMain_AfterSelect(object sender, TreeViewEventArgs e) {
+            if (TreeViewMain.SelectedNode != null) {
+                LabelReadout.Text = "";
+                LabelReadout.Text += "Name: " + ((FileNode)(TreeViewMain.SelectedNode)).Name + Environment.NewLine;
+                LabelReadout.Text += "Path: " + ((FileNode)(TreeViewMain.SelectedNode)).Path + Environment.NewLine;
+                LabelReadout.Text += "Size: " + ((FileNode)(TreeViewMain.SelectedNode)).Size + Environment.NewLine;
+                LabelReadout.Text += "Date Created: " + ((FileNode)(TreeViewMain.SelectedNode)).CreateDate + Environment.NewLine;
+                LabelReadout.Text += "Date Modified: " + ((FileNode)(TreeViewMain.SelectedNode)).ModifiedDate + Environment.NewLine;
+                
+            }
         }
     }
 }
