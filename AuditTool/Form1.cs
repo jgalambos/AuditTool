@@ -12,11 +12,49 @@ using System.IO;
 namespace AuditTool {
     public partial class Form1 : Form {
         List<string> drives = new List<string>();
+        System.Threading.Thread ScanThread;
         public Form1() {
             InitializeComponent();
+            ScanThread = new System.Threading.Thread(Scan);
+            ScanThread.IsBackground = true;
         }
 
-        private void button1_Click(object sender, EventArgs e) {
+        private void AddToErrorList(string text) {
+            if (RichTextBoxErrorReadout.InvokeRequired) {
+                RichTextBoxErrorReadout.Invoke(new MethodInvoker(() => AddToErrorList(text)));
+                return;
+            }
+            if (text == "") {
+                RichTextBoxErrorReadout.Text = "";
+            } else {
+                RichTextBoxErrorReadout.Text += text + Environment.NewLine;
+            }
+        }
+
+        private void AddNodeToTree(FileNode node) {
+            if (TreeViewMain.InvokeRequired) {
+                TreeViewMain.Invoke(new MethodInvoker(() => AddNodeToTree(node)));
+                return;
+            }
+            TreeViewMain.Nodes.Add(node);
+        }
+
+        //ScriptThread = new System.Threading.Thread(Initiate);
+        //ScriptThread.IsBackground = true;
+        //if (Console.InvokeRequired) {
+        //Console.Invoke(new MethodInvoker(() => PrintToConsole(text)));
+        //    return;
+        //}
+    //Console.AppendText(text + "\n");
+        // Set position to the end and scroll to it (Auto-scroll to bottom)
+    //    Console.SelectionStart = Console.Text.Length;
+    //    Console.ScrollToCaret();
+
+    //    using (StreamWriter file = new StreamWriter(LogPath, true)) {
+    //        file.WriteLine(text);
+    //    }
+
+private void button1_Click(object sender, EventArgs e) {
             DriveInfo[] readout = DriveInfo.GetDrives();
             LabelReadout.Text = "";
             foreach (DriveInfo i in readout) {
@@ -28,14 +66,24 @@ namespace AuditTool {
         }
 
         private void button2_Click(object sender, EventArgs e) {
+            ScanThread.Start();
+        }
+
+        private void Scan() {
             drives.Clear();
             DriveInfo[] readout = DriveInfo.GetDrives();
             foreach (DriveInfo i in readout) {
-                if (i.DriveType == DriveType.Fixed || i.DriveType == DriveType.Removable) {
-                    drives.Add(i.ToString());
+                if (checkBoxScanExternal.Checked) {
+                    if (i.DriveType == DriveType.Fixed || i.DriveType == DriveType.Removable) {
+                        drives.Add(i.ToString());
+                    }
+                } else {
+                    if (i.DriveType == DriveType.Fixed) {
+                        drives.Add(i.ToString());
+                    }
                 }
             }
-            RichTextBoxErrorReadout.Text = "";
+            AddToErrorList("");
             TreeViewMain.Nodes.Clear();
             FileNode RootNode = new FileNode();
             //DirectoryInfo dir = new DirectoryInfo(@"C:\");
@@ -43,7 +91,7 @@ namespace AuditTool {
                 DirectoryInfo dir = new DirectoryInfo(s);
                 RootNode = new FileNode(dir);
                 GetFileStructure(RootNode);
-                TreeViewMain.Nodes.Add(RootNode);
+                AddNodeToTree(RootNode);
             }
         }
 
@@ -65,7 +113,7 @@ namespace AuditTool {
                     GetFileStructureRecursive(value);
                     FileNodes.Add(value);
                 } catch (UnauthorizedAccessException ex) {
-                    RichTextBoxErrorReadout.Text += ex.Message + Environment.NewLine;
+                    AddToErrorList(ex.Message);
                 }
             }
             try {
@@ -108,7 +156,10 @@ namespace AuditTool {
                 LabelReadout.Text = "";
                 LabelReadout.Text += "Name: " + ((FileNode)(TreeViewMain.SelectedNode)).Name + Environment.NewLine;
                 LabelReadout.Text += "Path: " + ((FileNode)(TreeViewMain.SelectedNode)).Path + Environment.NewLine;
-                if (tempSize > 100000) {
+                if (tempSize > 100000000) {
+                    tempSize /= 1000000000;
+                    LabelReadout.Text += "Size: " + tempSize.ToString("0.000") + " GB" + Environment.NewLine;
+                } else if (tempSize > 100000) {
                     tempSize /= 1000000;
                     LabelReadout.Text += "Size: " + tempSize.ToString("0.000") + " MB" + Environment.NewLine;
                 } else if (tempSize > 100) {

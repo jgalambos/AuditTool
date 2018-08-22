@@ -30,6 +30,7 @@
             this.TreeViewMain = new System.Windows.Forms.TreeView();
             this.PanelControl = new System.Windows.Forms.Panel();
             this.RichTextBoxErrorReadout = new System.Windows.Forms.RichTextBox();
+            this.checkBoxScanExternal = new System.Windows.Forms.CheckBox();
             this.PanelTreeView.SuspendLayout();
             this.PanelControl.SuspendLayout();
             this.SuspendLayout();
@@ -90,6 +91,7 @@
             // 
             this.PanelControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PanelControl.Controls.Add(this.checkBoxScanExternal);
             this.PanelControl.Controls.Add(this.RichTextBoxErrorReadout);
             this.PanelControl.Controls.Add(this.LabelReadout);
             this.PanelControl.Controls.Add(this.button2);
@@ -108,6 +110,16 @@
             this.RichTextBoxErrorReadout.TabIndex = 3;
             this.RichTextBoxErrorReadout.Text = "";
             // 
+            // checkBoxScanExternal
+            // 
+            this.checkBoxScanExternal.AutoSize = true;
+            this.checkBoxScanExternal.Location = new System.Drawing.Point(6, 106);
+            this.checkBoxScanExternal.Name = "checkBoxScanExternal";
+            this.checkBoxScanExternal.Size = new System.Drawing.Size(134, 17);
+            this.checkBoxScanExternal.TabIndex = 4;
+            this.checkBoxScanExternal.Text = "Scan removable drives";
+            this.checkBoxScanExternal.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -119,6 +131,7 @@
             this.Text = "Form1";
             this.PanelTreeView.ResumeLayout(false);
             this.PanelControl.ResumeLayout(false);
+            this.PanelControl.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -131,6 +144,7 @@
         private System.Windows.Forms.TreeView TreeViewMain;
         private System.Windows.Forms.Panel PanelControl;
         private System.Windows.Forms.RichTextBox RichTextBoxErrorReadout;
+        private System.Windows.Forms.CheckBox checkBoxScanExternal;
     }
 }
 
