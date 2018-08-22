@@ -26,14 +26,18 @@
             this.button1 = new System.Windows.Forms.Button();
             this.LabelReadout = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.PanelTreeView = new System.Windows.Forms.Panel();
             this.TreeViewMain = new System.Windows.Forms.TreeView();
-            this.panel1.SuspendLayout();
+            this.PanelControl = new System.Windows.Forms.Panel();
+            this.RichTextBoxErrorReadout = new System.Windows.Forms.RichTextBox();
+            this.PanelTreeView.SuspendLayout();
+            this.PanelControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1080, 681);
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.button1.Location = new System.Drawing.Point(36, 593);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -43,15 +47,15 @@
             // 
             // LabelReadout
             // 
-            this.LabelReadout.Location = new System.Drawing.Point(822, 9);
+            this.LabelReadout.Location = new System.Drawing.Point(3, 1);
             this.LabelReadout.Name = "LabelReadout";
-            this.LabelReadout.Size = new System.Drawing.Size(333, 669);
+            this.LabelReadout.Size = new System.Drawing.Size(327, 125);
             this.LabelReadout.TabIndex = 1;
             this.LabelReadout.Text = "label1";
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(999, 681);
+            this.button2.Location = new System.Drawing.Point(160, 593);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -59,35 +63,62 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // panel1
+            // PanelTreeView
             // 
-            this.panel1.Controls.Add(this.TreeViewMain);
-            this.panel1.Location = new System.Drawing.Point(13, 13);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(803, 691);
-            this.panel1.TabIndex = 3;
+            this.PanelTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelTreeView.Controls.Add(this.TreeViewMain);
+            this.PanelTreeView.Location = new System.Drawing.Point(13, 13);
+            this.PanelTreeView.Name = "PanelTreeView";
+            this.PanelTreeView.Size = new System.Drawing.Size(803, 691);
+            this.PanelTreeView.TabIndex = 3;
             // 
             // TreeViewMain
             // 
+            this.TreeViewMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TreeViewMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TreeViewMain.Location = new System.Drawing.Point(3, 3);
+            this.TreeViewMain.Location = new System.Drawing.Point(0, 0);
             this.TreeViewMain.Name = "TreeViewMain";
             this.TreeViewMain.Size = new System.Drawing.Size(797, 685);
             this.TreeViewMain.TabIndex = 0;
             this.TreeViewMain.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewMain_AfterSelect);
+            // 
+            // PanelControl
+            // 
+            this.PanelControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PanelControl.Controls.Add(this.RichTextBoxErrorReadout);
+            this.PanelControl.Controls.Add(this.LabelReadout);
+            this.PanelControl.Controls.Add(this.button2);
+            this.PanelControl.Controls.Add(this.button1);
+            this.PanelControl.Location = new System.Drawing.Point(822, 12);
+            this.PanelControl.Name = "PanelControl";
+            this.PanelControl.Size = new System.Drawing.Size(333, 686);
+            this.PanelControl.TabIndex = 4;
+            // 
+            // RichTextBoxErrorReadout
+            // 
+            this.RichTextBoxErrorReadout.Location = new System.Drawing.Point(0, 129);
+            this.RichTextBoxErrorReadout.Name = "RichTextBoxErrorReadout";
+            this.RichTextBoxErrorReadout.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.RichTextBoxErrorReadout.Size = new System.Drawing.Size(330, 458);
+            this.RichTextBoxErrorReadout.TabIndex = 3;
+            this.RichTextBoxErrorReadout.Text = "";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1167, 716);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.LabelReadout);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.PanelControl);
+            this.Controls.Add(this.PanelTreeView);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.panel1.ResumeLayout(false);
+            this.PanelTreeView.ResumeLayout(false);
+            this.PanelControl.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -96,8 +127,10 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label LabelReadout;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel PanelTreeView;
         private System.Windows.Forms.TreeView TreeViewMain;
+        private System.Windows.Forms.Panel PanelControl;
+        private System.Windows.Forms.RichTextBox RichTextBoxErrorReadout;
     }
 }
 

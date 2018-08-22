@@ -35,7 +35,7 @@ namespace AuditTool {
                     drives.Add(i.ToString());
                 }
             }
-            LabelReadout.Text = "";
+            RichTextBoxErrorReadout.Text = "";
             TreeViewMain.Nodes.Clear();
             FileNode RootNode = new FileNode();
             //DirectoryInfo dir = new DirectoryInfo(@"C:\");
@@ -65,7 +65,7 @@ namespace AuditTool {
                     GetFileStructureRecursive(value);
                     FileNodes.Add(value);
                 } catch (UnauthorizedAccessException ex) {
-                    LabelReadout.Text += ex.Message + Environment.NewLine;
+                    RichTextBoxErrorReadout.Text += ex.Message + Environment.NewLine;
                 }
             }
             try {
@@ -78,7 +78,7 @@ namespace AuditTool {
                 parent.Nodes.AddRange(FileNodes.ToArray());
             } catch (UnauthorizedAccessException ex) {
                 // Not sure what the best way to get around this is.  I should have access.
-                LabelReadout.Text += ex.Message + Environment.NewLine;
+                RichTextBoxErrorReadout.Text += ex.Message + Environment.NewLine;
             }
 
         }
