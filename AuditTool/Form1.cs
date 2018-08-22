@@ -11,6 +11,7 @@ using System.IO;
 
 namespace AuditTool {
     public partial class Form1 : Form {
+        List<string> drives = new List<string>();
         public Form1() {
             InitializeComponent();
         }
@@ -21,17 +22,29 @@ namespace AuditTool {
             foreach (DriveInfo i in readout) {
                 if (i.DriveType == DriveType.Fixed || i.DriveType == DriveType.Removable) {
                     LabelReadout.Text += i.ToString() + " ";
+                    drives.Add(i.ToString());
                 }
             }
         }
 
         private void button2_Click(object sender, EventArgs e) {
+            drives.Clear();
+            DriveInfo[] readout = DriveInfo.GetDrives();
+            foreach (DriveInfo i in readout) {
+                if (i.DriveType == DriveType.Fixed || i.DriveType == DriveType.Removable) {
+                    drives.Add(i.ToString());
+                }
+            }
             LabelReadout.Text = "";
             TreeViewMain.Nodes.Clear();
-            DirectoryInfo dir = new DirectoryInfo(@"C:\Repositories");
-            FileNode RootNode = new FileNode(dir);
-            GetFileStructure(RootNode);
-            TreeViewMain.Nodes.Add(RootNode);
+            FileNode RootNode = new FileNode();
+            //DirectoryInfo dir = new DirectoryInfo(@"C:\");
+            foreach (string s in drives) {
+                DirectoryInfo dir = new DirectoryInfo(s);
+                RootNode = new FileNode(dir);
+                GetFileStructure(RootNode);
+                TreeViewMain.Nodes.Add(RootNode);
+            }
         }
 
         private void GetFileStructure(FileNode root) {
@@ -46,13 +59,18 @@ namespace AuditTool {
             FileNode value = new FileNode();
             List<FileNode> FileNodes = new List<FileNode>();
             DirectoryInfo info = new DirectoryInfo(parent.Path);
-            FileInfo[] files = info.GetFiles().OrderBy(p => p.CreationTime).ToArray();
-            try {
-                foreach (DirectoryInfo dir in info.EnumerateDirectories()) {
+            foreach (DirectoryInfo dir in info.EnumerateDirectories()) {
+                try {
                     value = new FileNode(dir);
                     GetFileStructureRecursive(value);
                     FileNodes.Add(value);
+                } catch (UnauthorizedAccessException ex) {
+                    LabelReadout.Text += ex.Message + Environment.NewLine;
                 }
+            }
+            try {
+                FileInfo[] files = info.GetFiles().OrderBy(p => p.CreationTime).ToArray();
+
                 foreach (FileInfo file in files) {
                     value = new FileNode(file);
                     FileNodes.Add(value);
@@ -92,10 +110,10 @@ namespace AuditTool {
                 LabelReadout.Text += "Path: " + ((FileNode)(TreeViewMain.SelectedNode)).Path + Environment.NewLine;
                 if (tempSize > 100000) {
                     tempSize /= 1000000;
-                    LabelReadout.Text += "Size: " + tempSize.ToString("0.00") + " MB" + Environment.NewLine;
+                    LabelReadout.Text += "Size: " + tempSize.ToString("0.000") + " MB" + Environment.NewLine;
                 } else if (tempSize > 100) {
                     tempSize /= 1000;
-                    LabelReadout.Text += "Size: " + tempSize.ToString("0.00") + " KB" + Environment.NewLine;
+                    LabelReadout.Text += "Size: " + tempSize.ToString("0.000") + " KB" + Environment.NewLine;
                 } else {
                     LabelReadout.Text += "Size: " + tempSize + " bytes" + Environment.NewLine;
                 }
