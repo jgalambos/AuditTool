@@ -31,6 +31,7 @@
             this.PanelControl = new System.Windows.Forms.Panel();
             this.RichTextBoxErrorReadout = new System.Windows.Forms.RichTextBox();
             this.checkBoxScanExternal = new System.Windows.Forms.CheckBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.PanelTreeView.SuspendLayout();
             this.PanelControl.SuspendLayout();
             this.SuspendLayout();
@@ -91,6 +92,7 @@
             // 
             this.PanelControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PanelControl.Controls.Add(this.button3);
             this.PanelControl.Controls.Add(this.checkBoxScanExternal);
             this.PanelControl.Controls.Add(this.RichTextBoxErrorReadout);
             this.PanelControl.Controls.Add(this.LabelReadout);
@@ -120,6 +122,16 @@
             this.checkBoxScanExternal.Text = "Scan removable drives";
             this.checkBoxScanExternal.UseVisualStyleBackColor = true;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(160, 640);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 5;
+            this.button3.Text = "Stop Scan";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -145,6 +157,7 @@
         private System.Windows.Forms.Panel PanelControl;
         private System.Windows.Forms.RichTextBox RichTextBoxErrorReadout;
         private System.Windows.Forms.CheckBox checkBoxScanExternal;
+        private System.Windows.Forms.Button button3;
     }
 }
 

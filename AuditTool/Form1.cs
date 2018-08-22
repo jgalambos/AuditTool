@@ -17,6 +17,7 @@ namespace AuditTool {
             InitializeComponent();
             ScanThread = new System.Threading.Thread(Scan);
             ScanThread.IsBackground = true;
+            LabelReadout.Text = "";
         }
 
         private void AddToErrorList(string text) {
@@ -39,22 +40,7 @@ namespace AuditTool {
             TreeViewMain.Nodes.Add(node);
         }
 
-        //ScriptThread = new System.Threading.Thread(Initiate);
-        //ScriptThread.IsBackground = true;
-        //if (Console.InvokeRequired) {
-        //Console.Invoke(new MethodInvoker(() => PrintToConsole(text)));
-        //    return;
-        //}
-    //Console.AppendText(text + "\n");
-        // Set position to the end and scroll to it (Auto-scroll to bottom)
-    //    Console.SelectionStart = Console.Text.Length;
-    //    Console.ScrollToCaret();
-
-    //    using (StreamWriter file = new StreamWriter(LogPath, true)) {
-    //        file.WriteLine(text);
-    //    }
-
-private void button1_Click(object sender, EventArgs e) {
+        private void button1_Click(object sender, EventArgs e) {
             DriveInfo[] readout = DriveInfo.GetDrives();
             LabelReadout.Text = "";
             foreach (DriveInfo i in readout) {
@@ -130,26 +116,7 @@ private void button1_Click(object sender, EventArgs e) {
             }
 
         }
-        /*
-        private string GetDirectoriesAndFiles(string path) {
-            List<FileNode> FileNodes = new List<FileNode>();
-            List<FileNode> ChildNode = new List<FileNode>();
-            string value = "";
-            DirectoryInfo info = new DirectoryInfo(path);
-            FileInfo[] files = info.GetFiles().OrderBy(p => p.CreationTime).ToArray();
-            foreach (FileInfo file in files) {
-                value += file.FullName + Environment.NewLine;
-                FileNodes.Add(new FileNode(file.FullName));
-            }
-            foreach (DirectoryInfo dir in info.GetDirectories()) {
-                value += dir.FullName + Environment.NewLine;
-                FileNodes.Add(new FileNode(dir.FullName));
-                value += GetDirectoriesAndFiles(dir.FullName.ToString());
-            }
-            TreeViewMain.Nodes.AddRange(FileNodes.ToArray());
-            return value;
-        }
-        */
+
         private void TreeViewMain_AfterSelect(object sender, TreeViewEventArgs e) {
             if (TreeViewMain.SelectedNode != null) {
                 float tempSize = ((FileNode)(TreeViewMain.SelectedNode)).Size;
@@ -172,8 +139,13 @@ private void button1_Click(object sender, EventArgs e) {
                 LabelReadout.Text += "Date Modified: " + ((FileNode)(TreeViewMain.SelectedNode)).ModifiedDate + Environment.NewLine;
                 if (((FileNode)(TreeViewMain.SelectedNode)).Hidden)
                     LabelReadout.Text += "This file is Hidden.";
-                
+
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e) {
+            ScanThread.Abort();
+            RichTextBoxErrorReadout.Text = "";
         }
     }
 }
