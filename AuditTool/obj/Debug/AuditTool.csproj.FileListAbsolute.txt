@@ -8,3 +8,7 @@ C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.csproj.GenerateResource.
 C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.csproj.CoreCompileInputs.cache
 C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.exe
 C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.pdb
+C:\Repositories\AuditTool\AuditTool\bin\Debug\Newtonsoft.Json.dll
+C:\Repositories\AuditTool\AuditTool\bin\Debug\Newtonsoft.Json.pdb
+C:\Repositories\AuditTool\AuditTool\bin\Debug\Newtonsoft.Json.xml
+C:\Repositories\AuditTool\AuditTool\obj\Debug\AuditTool.csproj.CopyComplete

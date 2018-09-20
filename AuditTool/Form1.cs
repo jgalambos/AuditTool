@@ -8,9 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace AuditTool {
     public partial class Form1 : Form {
+        bool testing = true;
+        const string LOGDIR = @"c:\images\Auditlog";
+        const string LOGPATH = @"C:\images\Auditlog\Log.txt";
+        const string SCANPATH = @"C:\images";
         List<string> drives = new List<string>();
         System.Threading.Thread ScanThread;
         public Form1() {
@@ -73,11 +78,18 @@ namespace AuditTool {
             TreeViewMain.Nodes.Clear();
             FileNode RootNode = new FileNode();
             //DirectoryInfo dir = new DirectoryInfo(@"C:\");
-            foreach (string s in drives) {
-                DirectoryInfo dir = new DirectoryInfo(s);
+            if (testing) {
+                DirectoryInfo dir = new DirectoryInfo(SCANPATH);
                 RootNode = new FileNode(dir);
                 GetFileStructure(RootNode);
                 AddNodeToTree(RootNode);
+            } else {
+                foreach (string s in drives) {
+                    DirectoryInfo dir = new DirectoryInfo(s);
+                    RootNode = new FileNode(dir);
+                    GetFileStructure(RootNode);
+                    AddNodeToTree(RootNode);
+                }
             }
         }
 
@@ -146,6 +158,27 @@ namespace AuditTool {
         private void button3_Click(object sender, EventArgs e) {
             ScanThread.Abort();
             RichTextBoxErrorReadout.Text = "";
+        }
+
+        private void button4_Click(object sender, EventArgs e) {
+            JsonSerializer serializer = new JsonSerializer();
+            
+            Directory.CreateDirectory(LOGDIR);
+            using (StreamWriter stream = new StreamWriter(LOGPATH))
+            using (JsonWriter json = new JsonTextWriter(stream)) {
+                foreach (FileNode fn in TreeViewMain.Nodes) {
+                    serializer.Serialize(json, JsonConvert.SerializeObject(fn, Formatting.Indented));
+                    RecursiveSerialize(fn, serializer, json);
+                }
+                RichTextBoxErrorReadout.Text += "Done Serializing";
+            }
+        }
+
+        private void RecursiveSerialize(FileNode node, JsonSerializer serializer, JsonWriter json) {
+            serializer.Serialize(json, JsonConvert.SerializeObject(node, Formatting.Indented));
+            foreach(FileNode fn in node.Nodes) {
+                RecursiveSerialize(fn, serializer, json);
+            }
         }
     }
 }
